@@ -12,57 +12,60 @@ class Solution {
 public:
     ListNode* mergeTwoLists(ListNode* n1, ListNode* n2) {
 
-    ListNode* n1_head = n1;
-    ListNode* n2_head = n2;
-    ListNode* n1_last = n1;
-    ListNode* n2_last = n2;
+    ListNode* n1_curr = n1;
+    ListNode* n2_curr = n2;
     ListNode* merged_head = NULL;
+    ListNode* merged_curr = NULL;
 
-    if (n1 != NULL && n2 != NULL && n1->val >= n2->val) {
-        merged_head = n2_head;
-        n1 = n1->next;
-        n2 = n2->next;
-        n2_last->next = n1_last;
-        n1_last->next = n2;
-        n2_last = n2_last->next;
-
-    }
-    else {
-        merged_head = n1_head;
-        if (n1 != NULL) {
-            n1 = n1->next;
-        }
-        if (n2 != NULL) {
-            n2 = n2->next;
-        }
-        if (n1_last != NULL) {
-            n1_last->next = n2_last;
-        }
+    if (n1 == NULL && n2 != NULL) {
+        merged_head = n2;
+        return merged_head;
     }
 
-    while (n1 != NULL) {
-        while (n2 != NULL) {
-            if (n1->val >= n2->val) {
-                n1_last = n1;
-                n1 = n1->next;
-                n2_last = n2;
-                n2 = n2->next;
-                n2_last->next = n1_last;
-                n1_last->next = n2;
-                n2_last = n2_last->next;
-            break;
-            }
-            else {
-                n1_last = n1;
-                n1 = n1->next;
-                n2_last->next = n1_last;
-                n1_last->next = n2;
-                n2_last = n1_last;
-                n2 = n2->next;
-                break;
-            }
-        }
+    if (n1 != NULL && n2 == NULL) {
+        merged_head = n1;
+        return merged_head;
     }
+
+    if (n1 == NULL && n2 == NULL) {
+        merged_head = NULL;
+        return merged_head;
+    }
+
+    while (n1_curr != NULL && n2_curr != NULL) {
+      if (n1_curr->val < n2_curr->val) {
+        if (merged_head == NULL)
+        {
+            merged_head = n1_curr;
+            merged_curr = n1_curr;
+        }
+        else {
+            merged_curr->next = n1_curr;
+            merged_curr = merged_curr->next;
+        }
+        n1_curr = n1_curr->next;
+      }
+      else if (n2_curr->val <= n1_curr->val) {
+        if (merged_head == NULL)
+        {
+            merged_head = n2_curr;
+            merged_curr = n2_curr;
+        }
+        else {
+            merged_curr->next = n2_curr;
+            merged_curr = merged_curr->next;
+        }
+        n2_curr = n2_curr->next;
+      }
+    }
+
+    if (n1_curr == NULL && n2_curr != NULL) {
+        merged_curr->next = n2_curr;
+    }
+    else if (n2_curr == NULL && n1_curr != NULL) {
+        merged_curr->next = n1_curr;
+    }
+
     return merged_head;
 
     }
