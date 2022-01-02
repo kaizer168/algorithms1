@@ -45,7 +45,7 @@ public:
                 n2_last->next = n1_last;
                 n1_last->next = n2;
                 n2_last = n2_last->next;
-            break;
+                break;
             }
             else {
                 n1_last = n1;
